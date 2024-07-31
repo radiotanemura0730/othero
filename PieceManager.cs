@@ -16,7 +16,10 @@ public class PieceManager : MonoBehaviour
 
     void Start()
     {
-        textDisplay.text = "white turn" + "\nwhite: 2" + "\nblack: 2";
+        whitePieceCount = CountPiece()[0];
+        blackPieceCount = CountPiece()[1];
+
+        UpdateScoreDisplay(whitePieceCount, blackPieceCount);
     }
 
     void Update()

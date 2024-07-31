@@ -4,7 +4,7 @@ public class BoardManager : MonoBehaviour
 {
     public GameObject whiteTilePrefab;
     public GameObject blackTilePrefab;
-    public GameObject whitePiecePrefab;  
+    public GameObject whitePiecePrefab;
     public GameObject blackPiecePrefab;
     public int rows = 8;
     public int columns = 8;
@@ -15,7 +15,7 @@ public class BoardManager : MonoBehaviour
     {
         GenerateBoard();
         InitializeBoardArray();
-        InitialBoardPieces();
+        InitialBoardPieces(HandicapManager.selectedHandicap);
     }
 
     void GenerateBoard()
@@ -54,12 +54,53 @@ public class BoardManager : MonoBehaviour
         PlacePiece(piece, x, y);
     }
 
-    void InitialBoardPieces()
+    void InitialBoardPieces(int handicap)
     {
         InitialPiece(true, 3, 3);
         InitialPiece(false, 4, 3);
         InitialPiece(false, 3, 4);
         InitialPiece(true, 4, 4);
+
+        if (handicap == 1)
+        {
+            InitialPiece(true, 0, 0);
+        }
+        else if (handicap == 2)
+        {
+            InitialPiece(true, 0, 0);
+            InitialPiece(true, 7, 7);
+        }
+        else if (handicap == 3)
+        {
+            InitialPiece(true, 0, 0);
+            InitialPiece(true, 7, 7);
+            InitialPiece(true, 0, 7);
+            InitialPiece(true, 7, 0);
+        }
+        else if (handicap == 4)
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                InitialPiece(true, 0, i);
+            }
+        }
+        else if (handicap == 5)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    InitialPiece(true, i, j);
+                }
+            }
+        }
+        else if (handicap == 6) {
+            for (int i = 0; i < 8; i++)
+            {
+               InitialPiece(true, 0, i);
+               InitialPiece(true, 7, i);
+            }
+        }
     }
 
     public void PlacePiece(GameObject piece, int x, int y)
