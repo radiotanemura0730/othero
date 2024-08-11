@@ -13,7 +13,7 @@ public class MainMenuManager : MonoBehaviour
 
     void StartGame()
     {
-        SceneManager.LoadScene("GameScene");
+        SceneManager.LoadScene("HandicapScene");
     }
 }
 
