@@ -1,15 +1,21 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
+using TMPro;
+using UnityEngine.SceneManagement;
 public class UserManager : MonoBehaviour
 {
     public UserDatabase userDatabase;
     public InputField usernameInput;
     public InputField passwordInput;
-    public Text feedbackText;
+    public TextMeshProUGUI feedbackText;
     public Button submitButton;
+    public Button loginButton;
     private void Start()
     {
         submitButton.onClick.AddListener(OnSubmitButtonClicked);
+        loginButton.onClick.AddListener(OnLoginButtonClicked);
+        feedbackText.text = "";
     }
     public void OnSubmitButtonClicked()
     {
@@ -31,6 +37,29 @@ public class UserManager : MonoBehaviour
         AddUser(username, password);
         feedbackText.text = "User added successfully!";
     }
+    public void OnLoginButtonClicked()
+    {
+        string username = usernameInput.text;
+        string password = passwordInput.text;
+
+        if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+        {
+            feedbackText.text = "Username and Password cannot be empty.";
+            return;
+        }
+
+        User loggedInUser = userDatabase.users.FirstOrDefault(user => user.username == username && user.password == password);
+
+        if (loggedInUser != null)
+        {
+            LoginManager.Instance.SetLoggedInUser(loggedInUser);
+            SceneManager.LoadScene("MainMenuScene");
+        }
+        else
+        {
+            feedbackText.text = "Invalid username or password.";
+        }
+    }
 
     private bool UserExists(string username)
     {
@@ -51,5 +80,9 @@ public class UserManager : MonoBehaviour
         newUser.password = password;
 
         userDatabase.users.Add(newUser);
+    }
+    private bool ValidateUser(string username, string password)
+    {
+        return userDatabase.users.Any(user => user.username == username && user.password == password);
     }
 }
