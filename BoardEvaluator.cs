@@ -1,10 +1,36 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 public class BoardEvaluator : MonoBehaviour
 {
     public BoardManager boardManager;
     public PieceManager pieceManager;
+    public static readonly List<int[]> dangerPositions = new List<int[]>
+    {
+        new int[] {1, 1},
+        new int[] {1, 6},
+        new int[] {6, 1},
+        new int[] {6, 6},
+    };
+    public static readonly List<int[]> notPrefferedPositions = new List<int[]>
+    {
+        new int[] {0, 1},
+        new int[] {1, 0},
+        new int[] {6, 0},
+        new int[] {1, 7},
+        new int[] {6, 0},
+        new int[] {7, 1},
+        new int[] {6, 7},
+        new int[] {7, 6},
+    };
+    public static readonly List<int[]> cornerPositions = new List<int[]>
+    {
+        new int[] {0, 0},
+        new int[] {0, 7},
+        new int[] {7, 0},
+        new int[] {7, 7},
+    };
 
     // 盤面の状態を取得し、評価結果を2D配列で返す。置けないマスは-999、置けるマスは1。
     public int[,] EvaluateBoard()
@@ -125,7 +151,20 @@ public class BoardEvaluator : MonoBehaviour
         {
             int emptySpaces = MoveEvaluator(coordinates);
 
-            Debug.Log($"Coordinates: [{coordinates[0]}, {coordinates[1]}], Empty spaces: {emptySpaces}");
+            if (dangerPositions.Any(pos => pos[0] == coordinates[0] && pos[1] == coordinates[1]))
+            {
+                emptySpaces += 20;
+            }
+
+            if (notPrefferedPositions.Any(pos => pos[0] == coordinates[0] && pos[1] == coordinates[1]))
+            {
+                emptySpaces += 10;
+            }
+
+            if (cornerPositions.Any(pos => pos[0] == coordinates[0] && pos[1] == coordinates[1]))
+            {
+                emptySpaces -= 20;
+            }
 
             // emptySpacesが現在の最小値より小さい場合、最適位置を更新
             if (emptySpaces < minEmptySpaces)
