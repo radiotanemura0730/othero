@@ -5,13 +5,14 @@ using TMPro; // TextMeshProの名前空間をインポート
 public class PieceManager : MonoBehaviour
 {
     public TextMeshProUGUI textDisplay;
-    public GameObject whitePiecePrefab;  // 白の駒のプレハブ
-    public GameObject blackPiecePrefab;  // 黒の駒のプレハブ
-    private bool isWhiteTurn = true;  // 白のターンかどうか
+    public GameObject whitePiecePrefab;
+    public GameObject blackPiecePrefab;
+    private bool isWhiteTurn = true;
     private Stack<Move> moveHistory = new Stack<Move>();
     public int whitePieceCount = 2;
     public int blackPieceCount = 2;
     public BoardManager boardManager;
+    public BoardEvaluator boardEvaluator;
     public bool isGameEnds;
 
     void Start()
@@ -45,6 +46,15 @@ public class PieceManager : MonoBehaviour
                     whitePieceCount = CountPiece()[0];
                     blackPieceCount = CountPiece()[1];
 
+                    List<int[]> placeablePositions = boardEvaluator.GetPlaceablePositions();
+                    foreach (int[] coordinates in placeablePositions)
+                    {
+                        int emptySpaces = boardEvaluator.MoveEvaluator(coordinates);
+                        List<Vector2Int> flippableFromPosition = FlipPieces(coordinates[0], coordinates[1], false);
+                    }
+
+                    boardEvaluator.ChooseBestPosition();
+
                     UpdateScoreDisplay(whitePieceCount, blackPieceCount);
                 }
             }
@@ -53,7 +63,7 @@ public class PieceManager : MonoBehaviour
 
 
 
-    void PlacePiece(int x, int y)
+    public void PlacePiece(int x, int y)
     {
         Vector3 position = new Vector3(x - 3.5f, y - 3.5f, -1);
         GameObject piece;
@@ -72,7 +82,7 @@ public class PieceManager : MonoBehaviour
         piece.transform.parent = boardManager.transform;
         boardManager.PlacePiece(piece, x, y);
 
-        List<Vector2Int> flippedPieces = FlipPieces(x, y);
+        List<Vector2Int> flippedPieces = FlipPieces(x, y, true);
         moveHistory.Push(new Move(x, y, isWhiteTurn, flippedPieces));
 
         isWhiteTurn = !isWhiteTurn;
@@ -86,6 +96,7 @@ public class PieceManager : MonoBehaviour
             }
         }
     }
+
 
     bool CanAnyPieceBePlaced()
     {
@@ -103,7 +114,7 @@ public class PieceManager : MonoBehaviour
     }
 
 
-    List<Vector2Int> FlipPieces(int x, int y)
+    public List<Vector2Int> FlipPieces(int x, int y, bool shouldFlip)
     {
         List<Vector2Int> flippedPieces = new List<Vector2Int>();
         int[,] directions = new int[,]
@@ -116,13 +127,22 @@ public class PieceManager : MonoBehaviour
         {
             int dx = directions[i, 0];
             int dy = directions[i, 1];
-            List<Vector2Int> flippedInDirection = FlipInDirection(x, y, dx, dy);
-            flippedPieces.AddRange(flippedInDirection);
+            if (shouldFlip)
+            {
+                List<Vector2Int> flippedInDirection = FlipInDirection(x, y, dx, dy, true);
+                flippedPieces.AddRange(flippedInDirection);
+            }
+            else
+            {
+                List<Vector2Int> flippedInDirection = FlipInDirection(x, y, dx, dy, false);
+                flippedPieces.AddRange(flippedInDirection);
+            }
+
         }
         return flippedPieces;
     }
 
-    List<Vector2Int> FlipInDirection(int x, int y, int dx, int dy)
+    List<Vector2Int> FlipInDirection(int x, int y, int dx, int dy, bool shouldFlip)
     {
         int curX = x + dx;
         int curY = y + dy;
@@ -138,7 +158,10 @@ public class PieceManager : MonoBehaviour
             {
                 if (hasOpponentPiece)
                 {
-                    FlipInDirectionHelper(x, y, dx, dy);
+                    if (shouldFlip)
+                    {
+                        FlipInDirectionHelper(x, y, dx, dy);
+                    }
                     return piecesToFlip;
                 }
                 return new List<Vector2Int>();
@@ -189,7 +212,7 @@ public class PieceManager : MonoBehaviour
         }
     }
 
-    bool CanPlacePiece(int x, int y)
+    public bool CanPlacePiece(int x, int y)
     {
         if (boardManager.GetPiece(x, y) != null)
         {

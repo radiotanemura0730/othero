@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 public class HandicapManager : MonoBehaviour
 {
-    public GameObject handicapPanel; // ハンデ選択画面のパネル
-    public List<Button> handicapButtons;// ハンデ選択のドロップダウン
-    public Button startButton; // ゲーム開始ボタン
+    public GameObject handicapPanel; 
+    public List<Button> handicapButtons;
+    public Button startButton;
     public static int selectedHandicap;
     void Start()
     {
