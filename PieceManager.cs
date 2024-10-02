@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro; // TextMeshProの名前空間をインポート
 
@@ -46,22 +47,40 @@ public class PieceManager : MonoBehaviour
                     whitePieceCount = CountPiece()[0];
                     blackPieceCount = CountPiece()[1];
 
-                    List<int[]> placeablePositions = boardEvaluator.GetPlaceablePositions();
-                    foreach (int[] coordinates in placeablePositions)
-                    {
-                        int emptySpaces = boardEvaluator.MoveEvaluator(coordinates);
-                        List<Vector2Int> flippableFromPosition = FlipPieces(coordinates[0], coordinates[1], false);
-                    }
-
-                    boardEvaluator.ChooseBestPosition();
-
                     UpdateScoreDisplay(whitePieceCount, blackPieceCount);
+
+                    if (!isWhiteTurn)
+                    {
+                        StartCoroutine(CPUTurn()); // 少し遅れてCPUの手番を開始
+                    }
                 }
             }
         }
     }
 
+    IEnumerator CPUTurn()
+    {
+        yield return new WaitForSeconds(1.0f); // CPUが動く前に1秒の遅延を追加
 
+        // CPUが置くべき最適な位置を取得
+        int[] bestPosition = boardEvaluator.ChooseBestPosition();
+
+        if (bestPosition != null)
+        {
+            int x = bestPosition[0];
+            int y = bestPosition[1];
+
+            // 黒の駒を最適な位置に配置
+            PlacePiece(x, y);
+            whitePieceCount = CountPiece()[0];
+            blackPieceCount = CountPiece()[1];
+            UpdateScoreDisplay(whitePieceCount, blackPieceCount);
+            if (!isWhiteTurn)
+            {
+                StartCoroutine(CPUTurn());
+            }
+        }
+    }
 
     public void PlacePiece(int x, int y)
     {
@@ -90,6 +109,7 @@ public class PieceManager : MonoBehaviour
         if (!CanAnyPieceBePlaced())
         {
             isWhiteTurn = !isWhiteTurn;
+
             if (!CanAnyPieceBePlaced())
             {
                 isGameEnds = true;
