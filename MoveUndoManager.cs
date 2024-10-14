@@ -14,5 +14,6 @@ public class GameManager : MonoBehaviour
     void UndoLastMove()
     {
         pieceManager.UndoMove();
+        pieceManager.UndoMove();  //CPU対戦時は２手戻す必要がある
     }
 }
