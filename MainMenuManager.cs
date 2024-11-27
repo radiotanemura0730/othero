@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,17 +9,26 @@ public class MainMenuManager : MonoBehaviour
     public Button startButton;
     public Button logoutButton;
     public TextMeshProUGUI loginDisplayText;
+    public Button startCPUBattleButton;
+    public static bool isVsCPU;
 
     void Start()
     {
-        startButton.onClick.AddListener(StartGame);
+        startButton.onClick.AddListener(StartVsPlayerGame);
+        startCPUBattleButton.onClick.AddListener(StartVsCPUGame);
         logoutButton.onClick.AddListener(OnLogoutButtonClicked);
         loginDisplayText.text = "Welcome, " + LoginManager.Instance.LoggedInUser.username;
     }
 
-    void StartGame()
+    void StartVsPlayerGame()
     {
         SceneManager.LoadScene("HandicapScene");
+        isVsCPU = false;
+    }
+    void StartVsCPUGame()
+    {
+        SceneManager.LoadScene("HandicapScene");
+        isVsCPU = true;
     }
     private void OnLogoutButtonClicked()
     {
