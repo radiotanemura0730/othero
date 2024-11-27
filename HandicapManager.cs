@@ -5,21 +5,62 @@ using System.Collections.Generic;
 
 public class HandicapManager : MonoBehaviour
 {
-    public GameObject handicapPanel; 
+    public GameObject handicapPanel;
     public List<Button> handicapButtons;
+    public Dropdown handicapTargetDropdown; 
+    public Dropdown chooseStarterDropdown;
     public Button startButton;
     public static int selectedHandicap;
+    public static bool isHandicapForWhite = true;
+    public static bool isStarterWhite = true;
+
     void Start()
     {
         handicapPanel.SetActive(true);
         startButton.onClick.AddListener(StartGame);
 
+        // ハンデボタンの初期化
         for (int i = 0; i < handicapButtons.Count; i++)
         {
-            int handicapValue = i; 
+            int handicapValue = i;
             handicapButtons[i].onClick.AddListener(() => OnHandicapButtonClicked(handicapValue));
         }
+
+        InitializeHandicapTargetDropdown();
+        InitializeChooseStarterDropdown();
     }
+
+    void InitializeHandicapTargetDropdown()
+    {
+        handicapTargetDropdown.options.Clear();
+        handicapTargetDropdown.options.Add(new Dropdown.OptionData("White"));
+        handicapTargetDropdown.options.Add(new Dropdown.OptionData("Black"));
+
+        handicapTargetDropdown.value = 0;
+
+        handicapTargetDropdown.onValueChanged.AddListener(OnHandicapTargetChanged);
+    }
+    void InitializeChooseStarterDropdown()
+    {
+        chooseStarterDropdown.options.Clear();
+        chooseStarterDropdown.options.Add(new Dropdown.OptionData("White"));
+        chooseStarterDropdown.options.Add(new Dropdown.OptionData("Black"));
+
+        chooseStarterDropdown.value = 0;
+
+        chooseStarterDropdown.onValueChanged.AddListener(StarterChanged);
+    }
+
+    void OnHandicapTargetChanged(int value)
+    {
+        isHandicapForWhite = value == 0; // 0: White, 1: Black
+    }
+
+    void StarterChanged(int value)
+    {
+        isStarterWhite = value == 0; // 0: White, 1: Black
+    }
+
     void OnHandicapButtonClicked(int handicapValue)
     {
         selectedHandicap = handicapValue;
@@ -27,6 +68,7 @@ public class HandicapManager : MonoBehaviour
 
     void StartGame()
     {
-        SceneManager.LoadScene("GameScene"); 
+        SceneManager.LoadScene("GameScene");
     }
 }
+

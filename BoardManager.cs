@@ -15,7 +15,7 @@ public class BoardManager : MonoBehaviour
     {
         GenerateBoard();
         InitializeBoardArray();
-        InitialBoardPieces(HandicapManager.selectedHandicap);
+        InitialBoardPieces(HandicapManager.selectedHandicap, HandicapManager.isHandicapForWhite);
     }
 
     void GenerateBoard()
@@ -54,7 +54,7 @@ public class BoardManager : MonoBehaviour
         PlacePiece(piece, x, y);
     }
 
-    void InitialBoardPieces(int handicap)
+    void InitialBoardPieces(int handicap, bool isHandicapForWhite)
     {
         InitialPiece(true, 3, 3);
         InitialPiece(false, 4, 3);
@@ -63,25 +63,25 @@ public class BoardManager : MonoBehaviour
 
         if (handicap == 1)
         {
-            InitialPiece(true, 0, 0);
+            InitialPiece(isHandicapForWhite, 0, 0);
         }
         else if (handicap == 2)
         {
-            InitialPiece(true, 0, 0);
-            InitialPiece(true, 7, 7);
+            InitialPiece(isHandicapForWhite, 0, 0);
+            InitialPiece(isHandicapForWhite, 7, 7);
         }
         else if (handicap == 3)
         {
-            InitialPiece(true, 0, 0);
-            InitialPiece(true, 7, 7);
-            InitialPiece(true, 0, 7);
-            InitialPiece(true, 7, 0);
+            InitialPiece(isHandicapForWhite, 0, 0);
+            InitialPiece(isHandicapForWhite, 7, 7);
+            InitialPiece(isHandicapForWhite, 0, 7);
+            InitialPiece(isHandicapForWhite, 7, 0);
         }
         else if (handicap == 4)
         {
             for (int i = 0; i < 8; i++)
             {
-                InitialPiece(true, 0, i);
+                InitialPiece(isHandicapForWhite, 0, i);
             }
         }
         else if (handicap == 5)
@@ -90,15 +90,15 @@ public class BoardManager : MonoBehaviour
             {
                 for (int j = 0; j < 4; j++)
                 {
-                    InitialPiece(true, i, j);
+                    InitialPiece(isHandicapForWhite, i, j);
                 }
             }
         }
         else if (handicap == 6) {
             for (int i = 0; i < 8; i++)
             {
-               InitialPiece(true, 0, i);
-               InitialPiece(true, 7, i);
+               InitialPiece(isHandicapForWhite, 0, i);
+               InitialPiece(isHandicapForWhite, 7, i);
             }
         }
     }

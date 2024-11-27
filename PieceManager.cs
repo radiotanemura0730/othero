@@ -8,7 +8,7 @@ public class PieceManager : MonoBehaviour
     public TextMeshProUGUI textDisplay;
     public GameObject whitePiecePrefab;
     public GameObject blackPiecePrefab;
-    private bool isWhiteTurn = true;
+    private bool isWhiteTurn = HandicapManager.isStarterWhite;
     private Stack<Move> moveHistory = new Stack<Move>();
     public int whitePieceCount = 2;
     public int blackPieceCount = 2;
@@ -22,6 +22,11 @@ public class PieceManager : MonoBehaviour
         blackPieceCount = CountPiece()[1];
 
         UpdateScoreDisplay(whitePieceCount, blackPieceCount);
+
+        if (!isWhiteTurn)
+        {
+            StartCoroutine(CPUTurn()); // 少し遅れてCPUの手番を開始
+        }
     }
 
     void Update()
