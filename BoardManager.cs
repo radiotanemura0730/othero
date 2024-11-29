@@ -1,4 +1,8 @@
+using System.Linq.Expressions;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class BoardManager : MonoBehaviour
 {
@@ -10,12 +14,19 @@ public class BoardManager : MonoBehaviour
     public int columns = 8;
     public float tileSize = 1.0f;
     public GameObject[,] boardArray;
+    public Button exitButton;
 
     void Start()
     {
         GenerateBoard();
         InitializeBoardArray();
         InitialBoardPieces(HandicapManager.selectedHandicap, HandicapManager.isHandicapForWhite);
+        exitButton.onClick.AddListener(ExitGame);
+    }
+
+    void ExitGame()
+    {
+        SceneManager.LoadScene("MainMenuScene");
     }
 
     void GenerateBoard()
