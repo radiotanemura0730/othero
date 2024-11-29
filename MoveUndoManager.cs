@@ -5,6 +5,7 @@ public class GameManager : MonoBehaviour
 {
     public Button undoButton;
     public PieceManager pieceManager;
+    public bool isVsCPU = MainMenuManager.isVsCPU;
 
     void Start()
     {
@@ -14,6 +15,9 @@ public class GameManager : MonoBehaviour
     void UndoLastMove()
     {
         pieceManager.UndoMove();
-        pieceManager.UndoMove();  //CPU対戦時は２手戻す必要がある
+
+        if (isVsCPU) {
+            pieceManager.UndoMove();  //CPU対戦時は２手戻す必要がある   
+        }
     }
 }
