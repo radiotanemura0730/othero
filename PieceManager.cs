@@ -15,7 +15,6 @@ public class PieceManager : MonoBehaviour
     public BoardManager boardManager;
     public BoardEvaluator boardEvaluator;
     public bool isGameEnds;
-    public bool isVsCPU = MainMenuManager.isVsCPU;
 
     void Start()
     {
@@ -24,7 +23,7 @@ public class PieceManager : MonoBehaviour
 
         UpdateScoreDisplay(whitePieceCount, blackPieceCount);
 
-        if (!isWhiteTurn && isVsCPU)
+        if (!isWhiteTurn && GameModeManager.Instance.IsCpuMode)
         {
             StartCoroutine(CPUTurn()); // 少し遅れてCPUの手番を開始
         }
@@ -55,7 +54,7 @@ public class PieceManager : MonoBehaviour
 
                     UpdateScoreDisplay(whitePieceCount, blackPieceCount);
 
-                    if (!isWhiteTurn && isVsCPU)
+                    if (!isWhiteTurn && GameModeManager.Instance.IsCpuMode)
                     {
                         StartCoroutine(CPUTurn()); // 少し遅れてCPUの手番を開始
                     }
