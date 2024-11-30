@@ -4,42 +4,66 @@ using System.Linq;
 
 public class BoardEvaluator : MonoBehaviour
 {
-    public BoardManager boardManager;
-    public PieceManager pieceManager;
-    public static readonly List<int[]> dangerPositions = new List<int[]>
+    public BoardManager boardManager; // BoardManager の参照を Unity Inspector で設定
+    public PieceManager pieceManager; // PieceManager の参照を Unity Inspector で設定
+    public int rows; // 初期化は Awake で行う
+    public int columns;
+    public List<int[]> dangerPositions;
+    public List<int[]> notPrefferedPositions;
+    public List<int[]> cornerPositions;
+
+    void Awake()
     {
-        new int[] {1, 1},
-        new int[] {1, 6},
-        new int[] {6, 1},
-        new int[] {6, 6},
-    };
-    public static readonly List<int[]> notPrefferedPositions = new List<int[]>
-    {
-        new int[] {0, 1},
-        new int[] {1, 0},
-        new int[] {6, 0},
-        new int[] {1, 7},
-        new int[] {6, 0},
-        new int[] {7, 1},
-        new int[] {6, 7},
-        new int[] {7, 6},
-    };
-    public static readonly List<int[]> cornerPositions = new List<int[]>
-    {
-        new int[] {0, 0},
-        new int[] {0, 7},
-        new int[] {7, 0},
-        new int[] {7, 7},
-    };
+        // boardManager の参照を確認
+        if (boardManager == null)
+        {
+            Debug.LogError("BoardManager is not assigned in BoardEvaluator.");
+            return;
+        }
+
+        // rows と columns を初期化
+        rows = boardManager.rows;
+        columns = boardManager.columns;
+        dangerPositions = new List<int[]>
+        {
+            new int[] {1, 1},
+            new int[] {1, rows - 2},
+            new int[] {columns - 2, 1},
+            new int[] {columns - 2, rows - 2},
+        };
+
+        notPrefferedPositions = new List<int[]>
+        {
+            new int[] {0, 1},
+            new int[] {1, 0},
+            new int[] {columns - 2, 0},
+            new int[] {1, rows - 1},
+            new int[] {columns - 2, 0},
+            new int[] {columns - 1, 1},
+            new int[] {columns - 2, rows - 1},
+            new int[] {columns - 1, rows - 2},
+        };
+
+        // cornerPositions を初期化
+        cornerPositions = new List<int[]>
+        {
+            new int[] {0, 0},
+            new int[] {0, rows - 1},
+            new int[] {columns - 1, 0},
+            new int[] {columns - 1, rows - 1},
+        };
+
+    }
+
 
     // 盤面の状態を取得し、評価結果を2D配列で返す。置けないマスは-999、置けるマスは1。
     public int[,] EvaluateBoard()
     {
-        int[,] evaluationBoard = new int[boardManager.columns, boardManager.rows];
+        int[,] evaluationBoard = new int[columns, rows];
 
-        for (int x = 0; x < boardManager.columns; x++)
+        for (int x = 0; x < columns; x++)
         {
-            for (int y = 0; y < boardManager.rows; y++)
+            for (int y = 0; y < rows; y++)
             {
                 // その場所に置けるかどうかをPieceManagerを使って判定
                 if (pieceManager.CanPlacePiece(x, y))
@@ -60,9 +84,9 @@ public class BoardEvaluator : MonoBehaviour
     {
         List<int[]> placeablePositions = new List<int[]>();
 
-        for (int x = 0; x < boardManager.columns; x++)
+        for (int x = 0; x < columns; x++)
         {
-            for (int y = 0; y < boardManager.rows; y++)
+            for (int y = 0; y < rows; y++)
             {
                 // 駒を置けるかどうかをPieceManagerを使って判定
                 if (pieceManager.CanPlacePiece(x, y))
