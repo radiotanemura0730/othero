@@ -4,8 +4,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-//Todo:対人戦でCPUが動いてしまうバグの修正
-
 public class MainMenuManager : MonoBehaviour
 {
     public Button startButton;

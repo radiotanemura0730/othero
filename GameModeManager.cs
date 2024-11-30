@@ -9,7 +9,6 @@ public class GameModeManager : MonoBehaviour
 
     private void Awake()
     {
-        // シングルトンの設定
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -19,7 +18,6 @@ public class GameModeManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    // モードを設定
     public void SetMode(bool isCpuMode)
     {
         IsCpuMode = isCpuMode;

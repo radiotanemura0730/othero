@@ -174,7 +174,6 @@ public class BoardEvaluator : MonoBehaviour
             }
         }
 
-        Debug.Log($"Best position is [{bestPosition[0]}, {bestPosition[1]}] with {minEmptySpaces} empty spaces.");
         return bestPosition;
     }
 
