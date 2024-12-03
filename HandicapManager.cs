@@ -33,8 +33,8 @@ public class HandicapManager : MonoBehaviour
     void InitializeHandicapTargetDropdown()
     {
         handicapTargetDropdown.options.Clear();
-        handicapTargetDropdown.options.Add(new Dropdown.OptionData("White"));
-        handicapTargetDropdown.options.Add(new Dropdown.OptionData("Black"));
+        handicapTargetDropdown.options.Add(new Dropdown.OptionData("white"));
+        handicapTargetDropdown.options.Add(new Dropdown.OptionData("black"));
 
         handicapTargetDropdown.value = 0;
 
@@ -43,8 +43,8 @@ public class HandicapManager : MonoBehaviour
     void InitializeChooseStarterDropdown()
     {
         chooseStarterDropdown.options.Clear();
-        chooseStarterDropdown.options.Add(new Dropdown.OptionData("White"));
-        chooseStarterDropdown.options.Add(new Dropdown.OptionData("Black"));
+        chooseStarterDropdown.options.Add(new Dropdown.OptionData("white"));
+        chooseStarterDropdown.options.Add(new Dropdown.OptionData("black"));
 
         chooseStarterDropdown.value = 0;
 
