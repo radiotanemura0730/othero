@@ -24,6 +24,7 @@ public class HandicapManager : MonoBehaviour
         {
             int handicapValue = i;
             handicapButtons[i].onClick.AddListener(() => OnHandicapButtonClicked(handicapValue));
+            OnHandicapButtonClicked(0);
         }
 
         InitializeHandicapTargetDropdown();
