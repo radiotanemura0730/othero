@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro; // TextMeshProの名前空間をインポート
+using TMPro; 
 
 public class PieceManager : MonoBehaviour
 {
@@ -56,7 +56,7 @@ public class PieceManager : MonoBehaviour
 
                     if (!isWhiteTurn && GameModeManager.Instance.IsCpuMode)
                     {
-                        StartCoroutine(CPUTurn()); // 少し遅れてCPUの手番を開始
+                        StartCoroutine(CPUTurn()); 
                     }
                 }
             }
@@ -244,11 +244,7 @@ public class PieceManager : MonoBehaviour
         }
         else
         {
-            int[,] directions = new int[,]
-            {
-        {1, 0}, {-1, 0}, {0, 1}, {0, -1},
-        {1, 1}, {-1, -1}, {1, -1}, {-1, 1}
-            };
+            int[,] directions = Directions.AllDirections;
 
             for (int i = 0; i < directions.GetLength(0); i++)
             {

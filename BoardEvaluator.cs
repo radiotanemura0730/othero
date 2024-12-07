@@ -4,9 +4,9 @@ using System.Linq;
 
 public class BoardEvaluator : MonoBehaviour
 {
-    public BoardManager boardManager; // BoardManager の参照を Unity Inspector で設定
-    public PieceManager pieceManager; // PieceManager の参照を Unity Inspector で設定
-    public int rows; // 初期化は Awake で行う
+    public BoardManager boardManager; 
+    public PieceManager pieceManager; 
+    public int rows; 
     public int columns;
     public List<int[]> dangerPositions;
     public List<int[]> notPrefferedPositions;
@@ -14,14 +14,7 @@ public class BoardEvaluator : MonoBehaviour
 
     void Awake()
     {
-        // boardManager の参照を確認
-        if (boardManager == null)
-        {
-            Debug.LogError("BoardManager is not assigned in BoardEvaluator.");
-            return;
-        }
 
-        // rows と columns を初期化
         rows = boardManager.rows;
         columns = boardManager.columns;
         dangerPositions = new List<int[]>
@@ -44,7 +37,6 @@ public class BoardEvaluator : MonoBehaviour
             new int[] {columns - 1, rows - 2},
         };
 
-        // cornerPositions を初期化
         cornerPositions = new List<int[]>
         {
             new int[] {0, 0},
@@ -102,12 +94,7 @@ public class BoardEvaluator : MonoBehaviour
 
     public int CountEmptySpacesAroundPosition(int x, int y, int[] placeToPiece)
     {
-        // 8方向（上下左右、斜め）を定義
-        int[,] directions = new int[,]
-        {
-        {1, 0}, {-1, 0}, {0, 1}, {0, -1}, // 上下左右
-        {1, 1}, {-1, -1}, {1, -1}, {-1, 1} // 斜め
-        };
+        int[,] directions = Directions.AllDirections;
 
         int emptyCount = 0;
 
@@ -168,7 +155,7 @@ public class BoardEvaluator : MonoBehaviour
         }
 
         int[] bestPosition = placeablePositions[0]; // 最初の位置を仮の最適位置とする
-        int minEmptySpaces = int.MaxValue; // 空きスペースの最小値を保存する変数を初期化
+        int minEmptySpaces = int.MaxValue; 
 
         // 各placeablePositionについて評価
         foreach (int[] coordinates in placeablePositions)
