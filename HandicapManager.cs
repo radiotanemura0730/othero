@@ -29,6 +29,9 @@ public class HandicapManager : MonoBehaviour
 
         InitializeHandicapTargetDropdown();
         InitializeChooseStarterDropdown();
+
+        OnHandicapTargetChanged(0);
+        StarterChanged(0);
     }
 
     void InitializeHandicapTargetDropdown()
