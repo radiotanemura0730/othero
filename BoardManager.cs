@@ -99,17 +99,28 @@ public class BoardManager : MonoBehaviour
         {
             for (int i = 0; i < 4; i++)
             {
-                for (int j = 0; j < 4; j++)
+                if (isHandicapForWhite) //黒がハンデのとき、1手目で終了してしまう問題を修正
                 {
-                    InitialPiece(isHandicapForWhite, i, j);
+                    for (int j = 0; j < 4; j++)
+                    {
+                        InitialPiece(isHandicapForWhite, i, j);
+                    }
+                }
+                else
+                {
+                    for (int j = 4; j < 8; j++)
+                    {
+                        InitialPiece(isHandicapForWhite, i, j);
+                    }
                 }
             }
         }
-        else if (handicap == 6) {
+        else if (handicap == 6)
+        {
             for (int i = 0; i < 8; i++)
             {
-               InitialPiece(isHandicapForWhite, 0, i);
-               InitialPiece(isHandicapForWhite, 7, i);
+                InitialPiece(isHandicapForWhite, 0, i);
+                InitialPiece(isHandicapForWhite, 7, i);
             }
         }
     }
